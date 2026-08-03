@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP-32 Camera TinyML: What I Learned | Salitha Sadalinda</title>
+  <meta name="description" content="Running object detection and image classification on the XIAO ESP32S3 Sense camera — PSRAM tensor arena, Edge Impulse FOMO, and a 31x ESP-NN speedup.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/esp32-cam-tinyml.html">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="/">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#featured">Featured</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <article class="post">
+        <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+        <h1 class="post-title">ESP-32 Camera TinyML: What I Learned</h1>
+        <p class="post-meta">Jul 20, 2026 &middot; Embedded AI &middot; ESP-32 &middot; TinyML</p>
+
+        <p>
+          The XIAO ESP32S3 Sense is a tiny board with a camera that is genuinely capable of
+          running ML models on-device. These are the hard-won lessons from deploying an Edge
+          Impulse FOMO object detector (cloth counting) and a Teachable Machine image
+          classifier on its integrated OV2640/OV3660 camera.
+        </p>
+
+        <h2>The camera auto-detects as OV3660, not OV2640</h2>
+        <p>
+          Everyone assumes the Sense uses an OV2640. The esp32-camera driver actually
+          auto-detects it as an <strong>OV3660</strong>. Trust the driver's detection — hard-coding
+          OV2640 assumptions in your init code causes subtle capture failures that look like
+          wiring problems.
+        </p>
+
+        <h2>The tensor arena must live in PSRAM</h2>
+        <p>
+          A 96&times;96 grayscale model needs around 180&nbsp;KB of tensor arena. That does not fit
+          in the ESP32-S3's internal RAM, so the arena must be allocated with
+          <code>heap_caps_malloc(..., MALLOC_CAP_SPIRAM)</code>. Enabling OPI PSRAM in the board
+          settings is non-negotiable:
+        </p>
+        <pre><code>CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_USE_CAPS_ALLOC=y
+CONFIG_SPIRAM_ALLOW_BSS_SEG_EXTERNAL_MEMORY=y</code></pre>
+        <p>
+          For the Edge Impulse FOMO model I had to <strong>double</strong> the tensor arena size by
+          hand — from 182,579 bytes to 365,158 bytes in the generated inferencing header — before
+          the model would allocate all its tensors.
+        </p>
+
+        <h2>Reference kernels are painfully slow</h2>
+        <p>
+          Running the classifier with TFLite Micro's reference C++ kernels took ~4.6 seconds per
+          frame on the ESP32-S3 — useless for real time. The S3 has no HIFI5 DSP, so the generic
+          XTENSA kernels in tflite-micro give no benefit either.
+        </p>
+
+        <h2>ESP-NN is the game-changer: 31&times; faster</h2>
+        <p>
+          Switching to the ESP-IDF framework with Espressif's <strong>ESP-NN</strong> library replaced
+          the reference conv, depthwise-conv, fully-connected, pooling, softmax, add and mul
+          kernels with hand-tuned assembly for the S3's MAC16/PIE instructions:
+        </p>
+        <pre><code>Arduino / reference kernels   ~4600 ms/frame   0.22 FPS
+ESP-IDF + ESP-NN               ~147  ms/frame   5.8  FPS   (31x faster)</code></pre>
+        <p>
+          With capture (~25&nbsp;ms) plus inference (~147&nbsp;ms) the total per-frame cost drops to
+          ~172&nbsp;ms — fast enough for live classification.
+        </p>
+
+        <h2>Everything is int8 and unsigned-to-signed matters</h2>
+        <p>
+          The exported model is signed int8. Camera frames arrive unsigned, so subtract 128 from
+          each pixel before inference or every prediction is garbage. Frame handling is also
+          critical: capture QVGA (320&times;240), center-crop, and downscale to the model's
+          96&times;96 input rather than letting the camera produce odd resolutions.
+        </p>
+
+        <h2>Debugging the real problems</h2>
+        <ul>
+          <li>
+            <strong>Flat gray screen</strong> — not a code bug, spin the OV7670 lens focus ring.
+          </li>
+          <li>
+            <strong>Flash size warning</strong> ("expected 8&nbsp;MB, found 2&nbsp;MB") — benign on
+            the XIAO ESP32S3.
+          </li>
+          <li>
+            <strong>All scores flat</strong> — the model was exported without "Embedded model"
+            selected in Teachable Machine.
+          </li>
+          <li>
+            <strong>Partition scheme</strong> — use "Huge APP (3MB No OTA)" for the FOMO build;
+            models inflate firmware quickly.
+          </li>
+        </ul>
+
+        <p>
+          Source: <a href="https://github.com/salithasadalinda/cloth-counting-fw" target="_blank" rel="noopener">cloth-counting-fw</a>
+          and <a href="https://github.com/salithasadalinda/teachable_machine" target="_blank" rel="noopener">teachable_machine</a>.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; <a href="/">Home</a> &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
