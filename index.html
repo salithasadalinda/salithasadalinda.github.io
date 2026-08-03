@@ -1,80 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample Blog</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        .post {
-            background: #fff;
-            margin: 20px 0;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .post h2 {
-            color: #333;
-        }
-        .post p {
-            line-height: 1.6;
-        }
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salitha Sadalinda | AI/ML Engineer & Cybersecurity Enthusiast</title>
+  <meta name="description" content="Portfolio of Salitha Sadalinda — Machine Learning, Deep Learning, NLP, Computer Vision, Cybersecurity, firmware and edge AI on ESP-32. Python developer and open-source contributor.">
+  <meta name="author" content="Salitha Sadalinda">
+  <meta name="keywords" content="Salitha Sadalinda, Machine Learning, Deep Learning, NLP, Computer Vision, Cybersecurity, Networking, Python, Firmware, ESP-32, Edge AI, CNC, YOLO">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0d1117">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Salitha Sadalinda | Portfolio">
+  <meta property="og:description" content="AI/ML Engineer, firmware & edge AI developer. ESP-32, CNC, YOLO, Deep Learning, NLP and Computer Vision.">
+  <meta property="og:url" content="https://salithasadalinda.github.io/">
+  <meta property="og:site_name" content="Salitha Sadalinda">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Salitha Sadalinda | Portfolio">
+  <meta name="twitter:description" content="AI/ML Engineer & Cybersecurity enthusiast.">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/">
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Salitha Sadalinda",
+    "url": "https://salithasadalinda.github.io",
+    "jobTitle": "AI/ML Engineer",
+    "knowsAbout": ["Machine Learning", "Deep Learning", "NLP", "Computer Vision", "Cybersecurity", "Networking", "Python"]
+  }
+  </script>
 </head>
 <body>
-    <header>
-        <h1>Sample Blog</h1>
-        <p>Welcome to my blog! Enjoy reading the posts.</p>
-    </header>
+  <a class="skip-link" href="#main">Skip to content</a>
 
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="#top">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="container">
+        <h1>Hi, I&rsquo;m Salitha Sadalinda</h1>
+        <p class="role">AI/ML Engineer &middot; Firmware &amp; Edge AI Developer</p>
+        <p>
+          I build intelligent systems across Machine Learning, Deep Learning, NLP and Computer Vision —
+          and put them on real hardware. From ESP-32 edge devices and CNC controllers to YOLO vision
+          pipelines, I bridge embedded firmware and AI. Driven by curiosity, innovation and clean code.
+        </p>
+        <div class="btn-group">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-outline" href="https://github.com/salithasadalinda" target="_blank" rel="noopener">GitHub Profile</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="about-text">
+          <p>
+            Tech explorer focused on AI, applied data science and hardware. My work spans predictive
+            modeling, NLP, computer vision and cybersecurity — but a big part of it is firmware and
+            embedded: ESP-32 sensors, edge inference, MQTT telemetry and CNC machine control.
+          </p>
+          <p>
+            I design end-to-end pipelines that start in a training notebook and end on real devices —
+            YOLO models deployed for vision, serial-controlled automation, streaming cameras and IoT
+            dashboards. Also experienced in full-stack C#, PHP and JavaScript.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="num">25+</div>
+            <div class="label">Public Projects</div>
+          </div>
+          <div class="stat">
+            <div class="num">10+</div>
+            <div class="label">Domains Explored</div>
+          </div>
+          <div class="stat">
+            <div class="num">2020</div>
+            <div class="label">On GitHub Since</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-cat">
+            <h3>AI &amp; Data Science</h3>
+            <div class="badges">
+              <span class="badge">Machine Learning</span>
+              <span class="badge">Deep Learning</span>
+              <span class="badge">ANN</span>
+              <span class="badge">NLP</span>
+              <span class="badge">Computer Vision</span>
+              <span class="badge">DSP</span>
+              <span class="badge">Data Mining</span>
+              <span class="badge">Predictive Modeling</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3>Security &amp; Networks</h3>
+            <div class="badges">
+              <span class="badge">Cybersecurity</span>
+              <span class="badge">Network Security</span>
+              <span class="badge">Packet Analysis</span>
+              <span class="badge">Attack Detection</span>
+              <span class="badge">Networking</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3>Languages &amp; Tools</h3>
+            <div class="badges">
+              <span class="badge">Python</span>
+              <span class="badge">C# / ASP.NET</span>
+              <span class="badge">PHP</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">SQL</span>
+              <span class="badge">Jupyter</span>
+              <span class="badge">TensorFlow / Keras</span>
+              <span class="badge">Pandas / NumPy</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3>Systems &amp; IoT</h3>
+            <div class="badges">
+              <span class="badge">ESP-32</span>
+              <span class="badge">ESP8266</span>
+              <span class="badge">Embedded</span>
+              <span class="badge">Firmware</span>
+              <span class="badge">Edge AI</span>
+              <span class="badge">MQTT</span>
+              <span class="badge">Streaming Cameras</span>
+              <span class="badge">Serial Control</span>
+              <span class="badge">G-code</span>
+              <span class="badge">Linux</span>
+            </div>
+          </div>
+          <div class="skill-cat">
+            <h3>Vision &amp; ML Ops</h3>
+            <div class="badges">
+              <span class="badge">YOLOv8</span>
+              <span class="badge">Instance Segmentation</span>
+              <span class="badge">Object Detection</span>
+              <span class="badge">OCR</span>
+              <span class="badge">Streamlit</span>
+              <span class="badge">Tkinter</span>
+              <span class="badge">Arduino</span>
+              <span class="badge">Git</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/ESP-32-AgriGuard" target="_blank" rel="noopener">ESP-32 AgriGuard</a></h3>
+            <p class="p-desc">Smart agriculture platform on ESP-32. YOLO model trained on custom datasets, on-device image processing, MQTT telemetry for ESP8266 nodes and a Streamlit dashboard for monitoring.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#3572A5"></span>Python &middot; ESP-32 &middot; MQTT &middot; YOLO</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/CNC_robot_control" target="_blank" rel="noopener">CNC Robot Control</a></h3>
+            <p class="p-desc">Desktop CNC workflow engine in Tkinter. Serial communication with CNC controllers, real-time jogging and homing, line-by-line G-code flow editor with G/M-code reference browser.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#3572A5"></span>Python &middot; Serial &middot; G-code</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/gantry-card-detection" target="_blank" rel="noopener">Gantry Card Detection</a></h3>
+            <p class="p-desc">YOLOv8 instance segmentation trained on a custom gantry/ID-card dataset with oriented bounding boxes, plus OCR pipeline for extracting card data. End-to-end ML pipeline design.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#DA5B0B"></span>Python &middot; YOLOv8 &middot; OCR</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/EI_ESP32_CAM_SERVER" target="_blank" rel="noopener">ESP-32 CAM Streaming Server</a></h3>
+            <p class="p-desc">Arduino firmware for ESP-32 camera streaming with gzip-compressed routes and a web dashboard. Edge device serving live video for remote monitoring.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#00979D"></span>C++ / Arduino &middot; ESP-32 &middot; JS</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/diabetis_prediction" target="_blank" rel="noopener">Diabetes Prediction</a></h3>
+            <p class="p-desc">Predictive modeling study comparing multiple ML models for diabetes risk classification.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#3572A5"></span>Python</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/sentimentOnTweets" target="_blank" rel="noopener">Sentiment on Tweets</a></h3>
+            <p class="p-desc">Data mining project analysing sentiment from Twitter data using NLP pipelines.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#DA5B0B"></span>Jupyter Notebook</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/packetAnalysis" target="_blank" rel="noopener">Packet Analysis</a></h3>
+            <p class="p-desc">Network packet analyzer built for attack detection and security monitoring.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#DA5B0B"></span>Jupyter Notebook</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/WebApplication1" target="_blank" rel="noopener">ASP.NET CRUD API</a></h3>
+            <p class="p-desc">ASP.NET web API CRUD application backed by a SQL Server database.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#178600"></span>C#</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/chatgpt-chatbot" target="_blank" rel="noopener">ChatGPT Chatbot</a></h3>
+            <p class="p-desc">Conversational AI chatbot built on top of OpenAI's ChatGPT API.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#3572A5"></span>Python</span>
+          </article>
+
+          <article class="project-card">
+            <h3 class="p-title"><a href="https://github.com/salithasadalinda/AI_ML_DL_ANN_NLP_DIP_CV_DSP" target="_blank" rel="noopener">AI/ML Learning Labs</a></h3>
+            <p class="p-desc">Tutorials and practice notebooks spanning AI, ML, DL, ANN, NLP, DIP, CV and DSP.</p>
+            <span class="p-lang"><span class="lang-dot" style="background:#DA5B0B"></span>Jupyter Notebook</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <div class="contact-box">
+          <p>Interested in collaboration, open-source or a project? Reach out on GitHub.</p>
+          <div class="social-links">
+            <a href="https://github.com/salithasadalinda" target="_blank" rel="noopener" aria-label="GitHub profile">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
     <div class="container">
-        <div class="post">
-            <h2>First Blog Post</h2>
-            <p>Posted on January 5, 2025</p>
-            <p>
-                This is the content of the first blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. 
-                Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.
-            </p>
-        </div>
-
-        <div class="post">
-            <h2>Second Blog Post</h2>
-            <p>Posted on January 6, 2025</p>
-            <p>
-                This is the content of the second blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Phasellus imperdiet, nulla et dictum interdum, nisi lorem egestas odio, vitae scelerisque enim ligula venenatis dolor. 
-                Maecenas nisl est, ultrices nec congue eget, auctor vitae massa.
-            </p>
-        </div>
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; Built with HTML, CSS &amp; JavaScript &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
     </div>
+  </footer>
 
-    <footer>
-        <p>Sample Blog &copy; 2025</p>
-    </footer>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
