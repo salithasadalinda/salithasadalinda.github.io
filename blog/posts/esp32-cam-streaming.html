@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ESP-32 Camera Streaming: What I Learned | Salitha Sadalinda</title>
-  <meta name="description" content="Firmware notes from building a compressed ESP-32 CAM streaming server.">
+  <meta name="description" content="Firmware notes from building an ESP-32 CAM streaming server — hardware choice, heat, PSRAM, gzip assets, WiFi persistence and on-device ML.">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/esp32-cam-streaming.html">
@@ -35,39 +35,95 @@
         <p class="post-meta">Jul 20, 2026 &middot; Firmware &middot; ESP-32</p>
 
         <p>
-          Streaming video from an ESP-32 CAM sounds simple — it isn't. Memory is tiny, bandwidth
-          is limited, and a naive server makes the whole board crawl. Here is what I learned
-          building a camera server in Arduino.
+          Streaming video from an ESP-32 CAM sounds simple — it isn't. Memory is tiny, the board
+          runs hot, and a naive server makes everything crawl. These are the lessons from building
+          a camera server on the Xiao ESP32S3 Sense, AI-Thinker ESP-32 CAM and ESP-EYE, and from
+          running on-device ML on the same boards.
         </p>
 
-        <h2>Frame buffer strategy</h2>
+        <h2>Pick the board for the job</h2>
         <p>
-          Capture and serve are asynchronous. Grab one frame into a buffer, serve it, then grab
-          the next. Double-buffering stops the camera from stalling while a client downloads.
+          All three use the OV2640 (2 MP), but they are not equal. The Xiao ESP32S3 Sense is the
+          one I keep reaching for — dual-core 240 MHz, 8&nbsp;MB PSRAM, 8&nbsp;MB flash, BLE 5.0,
+          a built-in PDM mic and Type-C. The AI-Thinker CAM is cheapest but has no USB (UART only)
+          and only 4&nbsp;MB PSRAM. ESP-EYE has a display and face detection built in but costs the
+          most. For ML work the ESP32S3's larger PSRAM and faster cores matter most.
         </p>
 
-        <h2>Compression matters</h2>
+        <h2>They get hot — plan for cooling</h2>
         <p>
-          JPEG is the natural choice, but gzip-compressing static routes keeps the firmware
-          payload small. I moved dashboard assets to gzip-compressed routes served straight from
-          flash — faster boot, fewer bytes.
+          The Xiao ESP32S3 genuinely gets hot while streaming MJPEG. I added a copper heatsink
+          (not aluminium) plus a 3D-printed cooling contraption with a fan, mounted on a modular
+          gorilla-arm screw adapter. Two things I got wrong the first time:
+        </p>
+        <ul>
+          <li>Aluminium heatsinks are not enough — copper draws the heat out properly.</li>
+          <li>
+            Power the fan from its own source, not the same VBUS as the board. Sharing the rail
+            degraded performance.
+          </li>
+        </ul>
+
+        <h2>Camera settings that actually matter</h2>
+        <p>
+          One preprocessor macro selects the board — uncomment only one camera model. For a stable
+          stream the key settings were:
+        </p>
+        <pre><code>config.frame_size = FRAMESIZE_QVGA;   // 320x240
+config.jpeg_quality = 24;             // 0-63, lower = higher quality
+config.fb_count = 2;                  // double buffering, smoother stream
+
+s->set_brightness(s, 2);              // -2 to 2
+s->set_contrast(s, 1);
+s->set_saturation(s, 1);</code></pre>
+        <p>
+          Double buffering is the big one — capture and serve must run asynchronously, otherwise
+          the camera stalls while a client downloads a frame.
         </p>
 
-        <h2>Keep credentials out</h2>
+        <h2>Memory is the real constraint</h2>
         <p>
-          WiFi and API secrets belong in a <code>credentials.h.template</code> that the user copies
-          to <code>credentials.h</code>. The real file is gitignored so keys never leak into
-          version control.
+          A typical boot leaves about 229&nbsp;KB free heap and ~8.3&nbsp;MB free PSRAM. A stream
+          plus a web UI eats that fast. Serve static assets gzipped straight from flash instead of
+          RAM. I compress the whole frontend into a C header (<code>gzipped_assets.h</code>) with a
+          build script, and register async routes for it — faster boot, fewer bytes in RAM.
         </p>
 
-        <h2>Dashboard</h2>
+        <h2>WiFi that survives a reboot</h2>
         <p>
-          A small JavaScript dashboard displays the MJPEG stream with minimal overhead. Keep the
-          page light — every byte competes with video bandwidth on the same connection.
+          Config lives in LittleFS (<code>wifi_credentials.json</code>, <code>ei_config.json</code>).
+          If no saved network is reachable, the board drops into AP mode with a captive portal, so
+          setup needs no serial terminal. Multiple networks are stored and persist across reboots —
+          the same device moves between sites without reconfiguration.
         </p>
 
+        <h2>Running ML on the same camera</h2>
         <p>
-          Full source: <a href="https://github.com/salithasadalinda/EI_ESP32_CAM_SERVER" target="_blank" rel="noopener">EI_ESP32_CAM_SERVER</a>.
+          Object detection (Edge Impulse FOMO) and TinyML image classification run on these boards.
+          Lessons:
+        </p>
+        <ul>
+          <li>
+            The tensor arena must live in PSRAM — <code>heap_caps_malloc(..., MALLOC_CAP_SPIRAM)</code>.
+            Without OPI PSRAM enabled in board settings the model won't even load.
+          </li>
+          <li>
+            FOMO needed the arena size roughly doubled (e.g. 182&nbsp;KB &rarr; 365&nbsp;KB).
+          </li>
+          <li>
+            The Xiao camera auto-detects as <strong>OV3660</strong>, not OV2640 — trust the driver's
+            detection.
+          </li>
+          <li>
+            Reference kernels took ~4.6&nbsp;s per frame. ESP-NN kernels using the ESP32S3's MAC16/PIE
+            instructions got inference to ~147&nbsp;ms — about <strong>31&times; faster</strong>, and
+            fast enough for real-time classification.
+          </li>
+        </ul>
+
+        <p>
+          Full source: <a href="https://github.com/salithasadalinda/EI_ESP32_CAM_SERVER" target="_blank" rel="noopener">EI_ESP32_CAM_SERVER</a>
+          and <a href="https://github.com/salithasadalinda/cloth-counting-fw" target="_blank" rel="noopener">cloth-counting-fw</a>.
         </p>
       </article>
     </div>
