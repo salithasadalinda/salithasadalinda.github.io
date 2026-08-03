@@ -12,6 +12,9 @@ Personal portfolio and blog, hosted on [GitHub Pages](https://salithasadalinda.g
 
 ```
 ├── index.html          # Single-page portfolio
+├── blog/
+│   ├── index.html      # Blog index
+│   └── posts/          # Individual posts
 ├── 404.html            # Custom 404 page
 ├── favicon.svg
 ├── robots.txt

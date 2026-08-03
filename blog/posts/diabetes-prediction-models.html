@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparing ML Models for Diabetes Prediction | Salitha Sadalinda</title>
+  <meta name="description" content="Empirical comparison of multiple classifiers for diabetes risk prediction.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/diabetes-prediction-models.html">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="/">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#featured">Featured</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <article class="post">
+        <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+        <h1 class="post-title">Comparing ML Models for Diabetes Prediction</h1>
+        <p class="post-meta">May 2, 2026 &middot; Machine Learning</p>
+
+        <p>
+          When a dataset is small, the temptation is to reach for the biggest model. In this
+          project I compared several classifiers on the same diabetes dataset to see which
+          actually wins.
+        </p>
+
+        <h2>The baseline</h2>
+        <p>
+          Start with something boring: logistic regression or a decision tree. The baseline tells
+          you how much headroom there is before you burn hours tuning.
+        </p>
+
+        <h2>What I compared</h2>
+        <ul>
+          <li>Logistic Regression</li>
+          <li>Decision Tree</li>
+          <li>Random Forest</li>
+          <li>Support Vector Machine</li>
+          <li>K-Nearest Neighbours</li>
+        </ul>
+
+        <h2>What mattered</h2>
+        <p>
+          For medical-style classification, accuracy alone is misleading. Precision, recall and
+          the confusion matrix matter more — a false negative costs more than a false positive.
+          Ensemble methods won on recall while simple models stayed competitive, which is the
+          usual story on structured tabular data.
+        </p>
+
+        <h2>Takeaway</h2>
+        <p>
+          Evaluate baselines first, use the right metric for the domain, and don't over-engineer.
+          The notebook is in <a href="https://github.com/salithasadalinda/diabetis_prediction" target="_blank" rel="noopener">diabetis_prediction</a>.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; <a href="/">Home</a> &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing a G-code Flow Editor for CNC Control | Salitha Sadalinda</title>
+  <meta name="description" content="How I built a CNC workflow tool with jogging, homing and a G-code flow editor.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/cnc-gcode-flow-editor.html">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="/">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#featured">Featured</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <article class="post">
+        <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+        <h1 class="post-title">Designing a G-code Flow Editor for CNC Control</h1>
+        <p class="post-meta">Jun 15, 2026 &middot; Automation &middot; CNC</p>
+
+        <p>
+          Controlling a CNC machine over serial is straightforward — send G-code, read responses.
+          Building something professionals actually use is harder. Here is the design that worked.
+        </p>
+
+        <h2>Start with the serial layer</h2>
+        <p>
+          A rock-solid serial terminal is the foundation. Every other feature — jogging, homing,
+          flow execution — is just structured serial I/O. I abstracted it behind a backend
+          interface so a mock serial mode works without hardware.
+        </p>
+
+        <h2>Jog and home, then automate</h2>
+        <p>
+          Real-time jog controls and homing sequences cover interactive use. But the value is the
+          <strong>flow editor</strong>: a line-by-line list of G-code steps you can build, reorder
+          and run as an automated routine.
+        </p>
+
+        <h2>Reference, not memorise</h2>
+        <p>
+          Nobody remembers every G/M-code. A built-in code reference browser means the tool is
+          self-contained — no alt-tabbing to documentation mid-flow.
+        </p>
+
+        <h2>Persistence and shipping</h2>
+        <p>
+          Flows save as <code>.gcode</code> files and reload later. Distribution is automated with
+          a GitHub Actions release workflow that builds for Windows, macOS and Linux.
+        </p>
+
+        <p>
+          Open source: <a href="https://github.com/salithasadalinda/CNC_robot_control" target="_blank" rel="noopener">CNC_robot_control</a>.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; <a href="/">Home</a> &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

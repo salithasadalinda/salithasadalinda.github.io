@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP-32 Camera Streaming: What I Learned | Salitha Sadalinda</title>
+  <meta name="description" content="Firmware notes from building a compressed ESP-32 CAM streaming server.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/esp32-cam-streaming.html">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="/">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#featured">Featured</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <article class="post">
+        <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+        <h1 class="post-title">ESP-32 Camera Streaming: What I Learned</h1>
+        <p class="post-meta">Jul 20, 2026 &middot; Firmware &middot; ESP-32</p>
+
+        <p>
+          Streaming video from an ESP-32 CAM sounds simple — it isn't. Memory is tiny, bandwidth
+          is limited, and a naive server makes the whole board crawl. Here is what I learned
+          building a camera server in Arduino.
+        </p>
+
+        <h2>Frame buffer strategy</h2>
+        <p>
+          Capture and serve are asynchronous. Grab one frame into a buffer, serve it, then grab
+          the next. Double-buffering stops the camera from stalling while a client downloads.
+        </p>
+
+        <h2>Compression matters</h2>
+        <p>
+          JPEG is the natural choice, but gzip-compressing static routes keeps the firmware
+          payload small. I moved dashboard assets to gzip-compressed routes served straight from
+          flash — faster boot, fewer bytes.
+        </p>
+
+        <h2>Keep credentials out</h2>
+        <p>
+          WiFi and API secrets belong in a <code>credentials.h.template</code> that the user copies
+          to <code>credentials.h</code>. The real file is gitignored so keys never leak into
+          version control.
+        </p>
+
+        <h2>Dashboard</h2>
+        <p>
+          A small JavaScript dashboard displays the MJPEG stream with minimal overhead. Keep the
+          page light — every byte competes with video bandwidth on the same connection.
+        </p>
+
+        <p>
+          Full source: <a href="https://github.com/salithasadalinda/EI_ESP32_CAM_SERVER" target="_blank" rel="noopener">EI_ESP32_CAM_SERVER</a>.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; <a href="/">Home</a> &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

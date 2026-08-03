@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training YOLOv8 on a Custom Dataset | Salitha Sadalinda</title>
+  <meta name="description" content="Walkthrough of training a YOLOv8 model on custom labelled data.">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="canonical" href="https://salithasadalinda.github.io/blog/posts/training-yolo-custom-dataset.html">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <nav class="container" aria-label="Primary">
+      <a class="nav-brand" href="/">Salitha&nbsp;Sadalinda</a>
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#featured">Featured</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="container">
+      <article class="post">
+        <a class="back-link" href="/blog/">&larr; Back to Blog</a>
+        <h1 class="post-title">Training YOLOv8 on a Custom Dataset</h1>
+        <p class="post-meta">Aug 4, 2026 &middot; Computer Vision</p>
+
+        <p>
+          Object detection starts with data. This post covers the pipeline I use for training
+          YOLOv8 models on custom datasets — from folder layout to evaluating the trained weights.
+        </p>
+
+        <h2>Dataset layout</h2>
+        <p>
+          Ultralytics expects a specific directory structure. Images and labels live in
+          <code>train</code>, <code>val</code> and <code>test</code> splits, with a
+          <code>data.yaml</code> pointing to them:
+        </p>
+        <pre><code>dataset/
+  train/
+    images/  labels/
+  val/
+    images/  labels/
+  data.yaml</code></pre>
+
+        <h2>data.yaml</h2>
+        <p>Point the config at the splits and declare your classes:</p>
+        <pre><code>path: dataset
+train: train/images
+val: val/images
+
+names:
+  0: target_class</code></pre>
+
+        <h2>Training</h2>
+        <pre><code>from ultralytics import YOLO
+
+model = YOLO("yolov8m.pt")
+model.train(data="data.yaml", epochs=50, imgsz=640)</code></pre>
+
+        <h2>Evaluation</h2>
+        <p>
+          The training run produces <code>runs/detect/train</code> with metrics, confusion matrix
+          and PR curves. I compare <code>mAP@0.5</code> and <code>mAP@0.5:0.95</code> to judge
+          whether the model is overfitting or underfitting, then adjust epochs and data
+          augmentation.
+        </p>
+
+        <p>
+          That model then becomes the detector used by the rest of the pipeline — in my case,
+          on-device inference on an ESP-32 for the AgriGuard project.
+        </p>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      &copy; <span id="year">2026</span> Salitha Sadalinda &middot; <a href="/">Home</a> &middot;
+      Hosted on <a href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
